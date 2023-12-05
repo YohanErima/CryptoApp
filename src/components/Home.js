@@ -7,13 +7,18 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-const Home = () => {
+const Home = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.wrapper}>
-      <Text style={styles.title}>Accueil</Text>
-      <TouchableOpacity style={styles.cesar} onPress={() => null}>
-        <Text>Chiffrement de César</Text>
-      </TouchableOpacity>
+      <View style={styles.container}>
+        <Text style={styles.text}>Bienvenue sur Mon App</Text>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate("Cesar")}
+        >
+          <Text style={styles.buttonText}>Accéder au chiffrement</Text>
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   );
 };
@@ -21,14 +26,24 @@ const Home = () => {
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
+  },
+  container: {
+    flex: 1,
     justifyContent: "center",
     alignItems: "center",
   },
-  title: {
-    fontSize: 64,
+  text: {
+    fontSize: 24,
+    marginBottom: 20,
   },
-  cesar: {
-    fontSize: 32,
+  button: {
+    backgroundColor: "#3498db",
+    padding: 10,
+    borderRadius: 5,
+  },
+  buttonText: {
+    color: "white",
+    fontSize: 18,
   },
 });
 

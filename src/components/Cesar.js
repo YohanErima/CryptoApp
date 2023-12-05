@@ -1,45 +1,68 @@
-import React from "react";
-import { View, SafeAreaView, StyleSheet, Text, TextInput } from "react-native";
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from "react-native";
+import { TextInput as PaperTextInput, Button } from "react-native-paper";
+import encryptCesar from "../utils/cesar";
 
 const Cesar = () => {
+  const [message, setMessage] = useState("");
+  const [decalage, setDecalage] = useState("");
+  const [messageCrypte, setMessageCrypte] = useState("");
+
+  const crypter = () => {
+    try {
+      const decalageValue = parseInt(decalage, 10); // Convertir la chaîne en nombre
+      const result = encryptCesar(message, decalageValue);
+      setMessageCrypte(result);
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+
+  const dissmissKeyboard = () => {
+    Keyboard.dismiss();
+  };
   return (
-    <SafeAreaView style={styles.wrapper}>
+    <TouchableWithoutFeedback onPress={dissmissKeyboard}>
       <View style={styles.container}>
-        <Text>Chiffrement de Cesar</Text>
-        <Text>Texte à saisir</Text>
-        <TextInput
-          style={styles.inp}
-          placeholder="Entrez votre message à cripter"
+        <Text style={styles.title}>Chiffrement de Message</Text>
+        <Text>Entrer votre message à chiffrer :</Text>
+        <PaperTextInput
+          label="Message"
+          value={message}
+          onChangeText={(text) => setMessage(text)}
         />
-        <Text>Décalage à choisir</Text>
-        <TextInput
-          style={styles.inp}
-          placeholder="Entre 0 et 25"
+        <Text>Décalage :</Text>
+        <PaperTextInput
+          label="Décalage"
+          value={decalage}
+          onChangeText={(text) => setDecalage(text.replace(/[^0-9]/g, ""))}
           keyboardType="numeric"
         />
-        <Text style={{ color: "red" }}>Message cripter : </Text>
+        <Button mode="contained" onPress={crypter}>
+          Chiffrer
+        </Button>
+        <Text>Résultat : {messageCrypte}</Text>
       </View>
-    </SafeAreaView>
+    </TouchableWithoutFeedback>
   );
 };
 
 const styles = StyleSheet.create({
-  wrapper: {
-    flex: 1,
-    backgroundColor: "skyblue",
-  },
   container: {
+    padding: 16,
     flex: 1,
-    alignItems: "center",
     justifyContent: "center",
   },
-  inp: {
-    height: 40,
-    width: "50%",
-    borderColor: "gray",
-    borderWidth: 1,
-    marginVertical: 10,
-    paddingLeft: 8,
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 16,
   },
 });
 
